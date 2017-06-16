@@ -8,7 +8,7 @@ class Comment
     private $creationDate;
     private $text;
 
-    public function __construct($id, $userId, $postId, $creationDate, $text)
+    public function __construct()
     {
         $this->id = -1;
         $this->userId = "";
@@ -95,11 +95,11 @@ class Comment
     {
         $postId = $conn->real_escape_string($postId);
 
-        $sql = "SELECT * FROM `comment` WHERE `postId` = '$postId'";
+        $sql = "SELECT * FROM `comment` WHERE `postId` = '$postId' ORDER BY `creationDate` DESC";
 
         $result = $conn->query($sql);
 
-        if ($result) {
+        if (!$result) {
             die ("Query error" . $conn->error);
         }
 
@@ -109,12 +109,12 @@ class Comment
     public function saveToDb(mysqli $conn)
     {
         if ($this->id === -1) {
-            $sql = sprintf("INSERT INTO `comment` (`text`, `creationDate`, `userId`,  `postId`) 
-                                  VALUES (`%s`, `%s`, `%d`, `%d`)",
-                $this->text,
-                $this->creationDate,
+            $sql = sprintf("INSERT INTO `comment` (`userId`, `postId`, `creationDate`,  `text`) 
+                                  VALUES ('%d', '%d', '%s', '%s')",
                 $this->userId,
-                $this->postId
+                $this->postId,
+                $this->creationDate,
+                $this->text
             );
 
             $result = $conn->query($sql);
