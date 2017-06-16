@@ -123,7 +123,7 @@ class User {
             $user->setHash($userArray['password']);
 
             return $user;
-        }else {
+        } else {
             return false;
         }
     }

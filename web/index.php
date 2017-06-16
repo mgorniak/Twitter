@@ -89,6 +89,7 @@ if ($_SESSION['view'] === "all") {
                 <td>Autor</td>
                 <td>Data</td>
             </tr>
+<!--            Wyświetlanie listy tweetów. Wszystkich lub tylko zalogowanego użytkownika-->
             <?php
             $id = 0;
                 foreach ($allTweets as $tweet){

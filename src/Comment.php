@@ -62,5 +62,68 @@ class Comment
         return $this->text;
     }
 
-    
+    static public function loadCommentById(mysqli $conn, $id)
+    {
+        $id = $conn->real_escape_string($id);
+
+        $sql = "SELECT * FROM `comment` WHERE `id` = '$id'";
+
+        $result = $conn->query($sql);
+
+        if ($result) {
+            die ("Query error" . $conn->error);
+        }
+
+        if ($result->num_rows === 1) {
+            $commentArray = $result->fetch_assoc();
+
+            $comment = new Comment();
+
+//            $comment->setId($comment['id']);
+            $comment->setText($commentArray['text']);
+            $comment->setCreationDate($commentArray['creationDate']);
+            $comment->setUserId($commentArray['userId']);
+            $comment->setPostId($commentArray['postId']);
+
+            return $comment;
+        } else {
+            return false;
+        }
+    }
+
+    static public function loadAllCommentsByPostId(mysqli $conn, $postId)
+    {
+        $postId = $conn->real_escape_string($postId);
+
+        $sql = "SELECT * FROM `comment` WHERE `postId` = '$postId'";
+
+        $result = $conn->query($sql);
+
+        if ($result) {
+            die ("Query error" . $conn->error);
+        }
+
+        return $result;
+    }
+
+    public function saveToDb(mysqli $conn)
+    {
+        if ($this->id === -1) {
+            $sql = sprintf("INSERT INTO `comment` (`text`, `creationDate`, `userId`,  `postId`) 
+                                  VALUES (`%s`, `%s`, `%d`, `%d`)",
+                $this->text,
+                $this->creationDate,
+                $this->userId,
+                $this->postId
+            );
+
+            $result = $conn->query($sql);
+
+            if ($result) {
+                $this->id = $conn->insert_id;
+            } else {
+                die ("Comment is not saved: " . $conn->error);
+            }
+        }
+    }
 }
