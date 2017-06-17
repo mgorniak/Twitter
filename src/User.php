@@ -109,6 +109,19 @@ class User {
         }
     }
 
+    static public function loadAllUsers(mysqli $conn)
+    {
+        $sql = "SELECT * FROM `user` ORDER BY `username` ASC";
+
+        $result = $conn->query($sql);
+
+        if(!$result){
+            die('Query error' . $conn->error);
+        }
+
+        return $result;
+    }
+
     public function save(mysqli $conn)
     {
         if (-1 === $this->id){

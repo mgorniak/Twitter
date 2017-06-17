@@ -65,7 +65,7 @@ class Message
     {
         $senderId = $conn->real_escape_string($senderId);
 
-        $sql = "SELECT * FROM `message` WHERE `senderId` = '$senderId'";
+        $sql = "SELECT * FROM `message` WHERE `senderId` = '$senderId' ORDER BY `id` DESC";
 
         $result = $conn->query($sql);
 
@@ -80,7 +80,7 @@ class Message
     {
         $receiverId = $conn->real_escape_string($receiverId);
 
-        $sql = "SELECT * FROM `message` WHERE `receiverId` = '$receiverId'";
+        $sql = "SELECT * FROM `message` WHERE `receiverId` = '$receiverId' ORDER BY `id` DESC";
 
         $result = $conn->query($sql);
 
@@ -89,5 +89,25 @@ class Message
         }
 
         return $result;
+    }
+
+    public function saveMessageToDb(mysqli $conn)
+    {
+        if ($this->id === -1) {
+            $sql = sprintf("INSERT INTO `message` (`text`, `senderId`, `receiverId`) 
+                                  VALUES ('%s', '%d', '%d')",
+                $this->text,
+                $this->senderId,
+                $this->receiverId
+            );
+
+            $result = $conn->query($sql);
+
+            if ($result) {
+                $this->id = $conn->insert_id;
+            } else {
+                die ("Comment is not saved: " . $conn->error);
+            }
+        }
     }
 }

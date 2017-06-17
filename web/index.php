@@ -77,42 +77,50 @@ if ($_SESSION['view'] === "all") {
     }
 
     if ($user) { ?>
-            You are logged in as: <?php echo $user->getUsername() ?>
-            <a href='logout.php'>Logout</a><br>
+        <div>You are logged in as: <?php echo $user->getUsername() ?></div>
+        <div><a href='mailBox.php'>Mailbox</a></div>
+        <div><a href='logout.php'>Logout</a></div>
         </p>
 <!--Formularz nadawania tweeta-->
-        <p>Write down your tweet <?php echo $user->getUsername();?>
-            <form action = "#" method = "POST">
-        <p><label>Text: <input name ="tweetText" type = "text"></label>
-            <input type = "submit" value = "Tweet"></p>
-        </form>
+        <div>
+            <p>Write down your tweet <?php echo $user->getUsername();?>
+                <form action = "#" method = "POST">
+            <p><label>Text: <input name ="tweetText" type = "text"></label>
+                <input type = "submit" value = "Tweet"></p>
+            </form>
+        </div>
 <!--Zmiana widoku tweetów. Wszystkie albo zalogowanego użytkownika-->
-        <form action="allOrUserTweets.php" method="POST">
-            <select name="allOrUserTweets">
-                <option value="all">All tweets</option>
-                <option value="user">Only my tweets</option>
-            </select>
-            <input type="submit" value="Change view">
-        </form>
+        <div>
+            <form action="allOrUserTweets.php" method="POST">
+                <select name="allOrUserTweets">
+                    <option value="all">All tweets</option>
+                    <option value="user">Only my tweets</option>
+                </select>
+                <input type="submit" value="Change view">
+            </form>
+        </div>
     <?php } else { ?>
-        <p>
-            <a href="loginForm.php">Login</a><br>
-            <a href="registerForm.php">Register</a><br><br>
-        </p>
+        <div>
+            <p>
+                <a href="loginForm.php">Login</a>
+                <a href="registerForm.php">Register</a>
+            </p>
+        </div>
     <?php } ?>
-        <p>All tweets: </p>
-        <table border="1" rules="all">
-            <tr>
-                <th>Id</th>
-                <th>Id tweeta</th>
-                <th>Treść</th>
-                <th>Autor</th>
-                <th>Data</th>
-                <th>Komentarze</th>
-            </tr>
-<!--Wyświetlanie listy tweetów. Wszystkich lub tylko zalogowanego użytkownika-->
-            <?php
-            $id = 0;
+        <div>
+            <p>All tweets: </p>
+            <table border="1" rules="all">
+                <tr>
+                    <th>Id</th>
+                    <th>Id tweeta</th>
+                    <th>Treść</th>
+                    <th>Autor</th>
+                    <th>Data</th>
+                    <th>Komentarze</th>
+                </tr>
+                <!--Wyświetlanie listy tweetów. Wszystkich lub tylko zalogowanego użytkownika-->
+                <?php
+                $id = 0;
                 foreach ($allTweets as $tweet){
                     $id++;
                     $postId = $tweet['id'];
@@ -134,14 +142,15 @@ if ($_SESSION['view'] === "all") {
                                 </form>
                                 
                                 <ul type='square'>";
-                                    foreach($allComments as $comment) {
-                                        $userComment = User::loadUserById($conn, $comment['userId']);
-                                        echo "<li>" . $comment['text'] . " - " . $userComment->getUsername() . " - dodano " . $comment['creationDate'] . "</li>";
-                                    };
-                                "</ul>
+                    foreach($allComments as $comment) {
+                        $userComment = User::loadUserById($conn, $comment['userId']);
+                        echo "<li>" . $comment['text'] . " - " . $userComment->getUsername() . " - dodano " . $comment['creationDate'] . "</li>";
+                    };
+                    "</ul>
                             </td></tr>";
                 }
-            ?>
-        </table>
+                ?>
+            </table>
+        </div>
 </body>
 </html>

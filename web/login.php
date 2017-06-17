@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $user = User::loadUserByUsername($conn, $username);
         
-        if ((false === $user) || (!password_verify($password, $user->getPassword()))) {
+        if ((!$user) || (!password_verify($password, $user->getPassword()))) {
             echo '<p>Incorrect username or password</p>';
             echo "<p><a href='loginForm.php'>Try to login again</a></p>";
             exit;
