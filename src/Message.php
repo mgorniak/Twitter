@@ -16,11 +16,6 @@ class Message
         $this->readed = "";
     }
 
-//    public function setId($id)
-//    {
-//        $this->id = $id;
-//    }
-
     public function setText($text)
     {
         $this->text = $text;

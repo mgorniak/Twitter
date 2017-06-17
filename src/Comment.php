@@ -79,7 +79,6 @@ class Comment
 
             $comment = new Comment();
 
-//            $comment->setId($comment['id']);
             $comment->setText($commentArray['text']);
             $comment->setCreationDate($commentArray['creationDate']);
             $comment->setUserId($commentArray['userId']);

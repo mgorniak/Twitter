@@ -53,25 +53,6 @@ class User {
         return $this->password;
     }
 
-    public function save(mysqli $conn)
-    {
-        if (-1 === $this->id){
-            $sql = sprintf("INSERT INTO `user` (`email`, `username`, `password`) VALUES ('%s', '%s', '%s')",
-                $this->email,
-                $this->username,
-                $this->password
-            );
-
-            $result = $conn->query($sql);
-
-            if ($result){
-                $this->id = $conn->insert_id;
-            }else{
-                die ("User not saved: " . $conn->error);
-            }
-        }
-    }
-
     static public function loadUserByUsername(mysqli $conn, $username)
     {
         $username = $conn->real_escape_string($username);
@@ -125,6 +106,25 @@ class User {
             return $user;
         } else {
             return false;
+        }
+    }
+
+    public function save(mysqli $conn)
+    {
+        if (-1 === $this->id){
+            $sql = sprintf("INSERT INTO `user` (`email`, `username`, `password`) VALUES ('%s', '%s', '%s')",
+                $this->email,
+                $this->username,
+                $this->password
+            );
+
+            $result = $conn->query($sql);
+
+            if ($result){
+                $this->id = $conn->insert_id;
+            }else{
+                die ("User not saved: " . $conn->error);
+            }
         }
     }
 }
