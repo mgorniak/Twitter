@@ -91,6 +91,29 @@ class Message
         return $result;
     }
 
+    static public function tickMessageReadedById(mysqli $conn, $id)
+    {
+        $id = $conn->real_escape_string($id);
+
+        $sql = "SELECT * FROM `message` WHERE `id` = $id";
+
+        $result = $conn->query($sql);
+        $result = $result->fetch_assoc();
+
+        if($result['readed'] == 0){
+            $sql = "UPDATE `message` SET `readed`='1' WHERE `id` = $id";
+        }
+//        elseif ($result['readed'] == 1){
+//            $sql = "UPDATE `message` SET `readed`='0' WHERE `id` = $id";
+//        }
+
+        $result = $conn->query($sql);
+
+        if (!$result) {
+            die ("Query error" . $conn->error);
+        }
+    }
+
     public function saveMessageToDb(mysqli $conn)
     {
         if ($this->id === -1) {
@@ -112,14 +135,5 @@ class Message
         }
     }
 
-    public function checkMessageReaded(mysqli $conn, $id)
-    {
-        $id = $conn->real_escape_string($id);
 
-        $sql = "SELECT * FROM `message` WHERE `id` = $id";
-
-        $result = $conn->query($sql);
-
-        var_dump($result);
-    }
 }

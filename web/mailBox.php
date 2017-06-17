@@ -14,7 +14,7 @@ if(isset ($_SESSION['sendMessage'])){
     unset   ($_SESSION['sendMessage']);
 }
 
-if (!$_SESSION['box']) {
+if (!isset($_SESSION['box'])) {
     $_SESSION['box'] = "inbox";
 }
 
@@ -49,15 +49,24 @@ if ( $user ) {?>
                                 echo "There is no message.";
                             } else {
                                 foreach ($allMessages as $message) {
-                                    var_dump($message['readed']);
                                     if ($message['readed'] == 0) {
                                         $readed = "Unread";
                                     } elseif ($message['readed'] == 1) {
                                         $readed = "Readed";
                                     }
                                     $receiver = User::loadUserById($conn, $message['receiverId']);
-                                    echo "<li>" . $message['text'] . "<br>- " . $receiver->getUsername() . " " . $readed . "<a href='checkMessage.php'>Przeczytano</a></li>";
-                                }
+                                    if($_SESSION['box'] === "inbox"){
+                                        $messageId = $message['id'];
+                                    } else {
+                                        $messageId = 0;
+                                    }
+                                    echo "<li>" . $message['text'] . "<br>- " . $receiver->getUsername() . " 
+                                                    <form action=\"tickMessage.php\" method=\"post\">
+                                                        <input type=\"hidden\" value=\"$messageId\" name=\"tick\">
+                                                        <input type=\"submit\" value=\"$readed\">
+                                                    </form>
+                                                    </li>"
+                                    ;}
                             }
                         ?>
                     </ol>

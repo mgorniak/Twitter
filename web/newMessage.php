@@ -47,6 +47,7 @@ if ($user) {
 <!--treść-->    <input type="text" name="messageText">
 <!--wyślij-->   <input type="submit" value="Send">
     </form>
+    <div><a href="mailBox.php">Return to Mailbox</a></div>
     <?php
 } else {
     header('location: mailBox.php');
