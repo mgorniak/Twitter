@@ -49,13 +49,14 @@ if ( $user ) {?>
                                 echo "There is no message.";
                             } else {
                                 foreach ($allMessages as $message) {
-                                    if ($message['readed'] === null) {
+                                    var_dump($message['readed']);
+                                    if ($message['readed'] == 0) {
                                         $readed = "Unread";
-                                    } else {
+                                    } elseif ($message['readed'] == 1) {
                                         $readed = "Readed";
                                     }
                                     $receiver = User::loadUserById($conn, $message['receiverId']);
-                                    echo "<li>" . $message['text'] . "<br>- " . $receiver->getUsername() . " " . $readed . "</li>";
+                                    echo "<li>" . $message['text'] . "<br>- " . $receiver->getUsername() . " " . $readed . "<a href='checkMessage.php'>Przeczytano</a></li>";
                                 }
                             }
                         ?>

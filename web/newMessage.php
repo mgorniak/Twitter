@@ -34,8 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($user) {
-?>
-        <?php echo $user->getUsername();?>, wybierz odbiorcę i napisz wiadomość
+        echo $user->getUsername();?>, wybierz odbiorcę i napisz wiadomość
             <form action="newMessage.php" method="POST">
 <!--nadawca-->  <input type="hidden" name="senderId" value="<?php echo $user->getId();?>">
 <!--odbiorca--> <select name="receiverId">

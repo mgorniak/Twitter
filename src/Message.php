@@ -13,7 +13,7 @@ class Message
         $this->text = "";
         $this->senderId = "";
         $this->receiverId = "";
-        $this->readed = "";
+        $this->readed = 0;
     }
 
     public function setText($text)
@@ -94,11 +94,12 @@ class Message
     public function saveMessageToDb(mysqli $conn)
     {
         if ($this->id === -1) {
-            $sql = sprintf("INSERT INTO `message` (`text`, `senderId`, `receiverId`) 
-                                  VALUES ('%s', '%d', '%d')",
+            $sql = sprintf("INSERT INTO `message` (`text`, `senderId`, `receiverId`, `readed`) 
+                                  VALUES ('%s', '%d', '%d', '%d')",
                 $this->text,
                 $this->senderId,
-                $this->receiverId
+                $this->receiverId,
+                $this->readed
             );
 
             $result = $conn->query($sql);
@@ -109,5 +110,16 @@ class Message
                 die ("Comment is not saved: " . $conn->error);
             }
         }
+    }
+
+    public function checkMessageReaded(mysqli $conn, $id)
+    {
+        $id = $conn->real_escape_string($id);
+
+        $sql = "SELECT * FROM `message` WHERE `id` = $id";
+
+        $result = $conn->query($sql);
+
+        var_dump($result);
     }
 }
