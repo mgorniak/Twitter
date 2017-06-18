@@ -62,7 +62,7 @@ class Comment
         return $this->text;
     }
 
-    static public function loadCommentById(mysqli $conn, $id)
+    public static function loadCommentById(mysqli $conn, $id)
     {
         $id = $conn->real_escape_string($id);
 
@@ -90,7 +90,7 @@ class Comment
         }
     }
 
-    static public function loadAllCommentsByPostId(mysqli $conn, $postId)
+    public static function loadAllCommentsByPostId(mysqli $conn, $postId)
     {
         $postId = $conn->real_escape_string($postId);
 

@@ -61,7 +61,7 @@ class Message
         return $this->readed;
     }
 
-    static public function loadAllMessagesBySenderId(mysqli $conn, $senderId)
+    public static function loadAllMessagesBySenderId(mysqli $conn, $senderId)
     {
         $senderId = $conn->real_escape_string($senderId);
 
@@ -76,7 +76,7 @@ class Message
         return $result;
     }
 
-    static public function loadAllMessagesByReceiverId(mysqli $conn, $receiverId)
+    public static function loadAllMessagesByReceiverId(mysqli $conn, $receiverId)
     {
         $receiverId = $conn->real_escape_string($receiverId);
 
@@ -91,7 +91,7 @@ class Message
         return $result;
     }
 
-    static public function tickMessageReadedById(mysqli $conn, $id)
+    public static function tickMessageReadedById(mysqli $conn, $id)
     {
         $id = $conn->real_escape_string($id);
 

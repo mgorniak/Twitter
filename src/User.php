@@ -53,7 +53,7 @@ class User {
         return $this->password;
     }
 
-    static public function loadUserByUsername(mysqli $conn, $username)
+    public static function loadUserByUsername(mysqli $conn, $username)
     {
         $username = $conn->real_escape_string($username);
 
@@ -81,7 +81,7 @@ class User {
         }
     }
 
-    static public function loadUserById(mysqli $conn, $id)
+    public static function loadUserById(mysqli $conn, $id)
     {
         $id = $conn->real_escape_string($id);
 
@@ -109,7 +109,7 @@ class User {
         }
     }
 
-    static public function loadAllUsers(mysqli $conn)
+    public static function loadAllUsers(mysqli $conn)
     {
         $sql = "SELECT * FROM `user` ORDER BY `username` ASC";
 

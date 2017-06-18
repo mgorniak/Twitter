@@ -50,7 +50,7 @@ class Tweet
         $this->creationDate = $creationDate;
     }
 
-    static public function loadTweetById(mysqli $conn, $id)
+    public static function loadTweetById(mysqli $conn, $id)
     {
         $id = $conn->real_escape_string($id);
 
@@ -76,7 +76,7 @@ class Tweet
         }
     }
 
-    static public function loadAllTweetsByUserId(mysqli $conn, $userId)
+    public static function loadAllTweetsByUserId(mysqli $conn, $userId)
     {
         $userId = $conn->real_escape_string($userId);
 
@@ -91,7 +91,7 @@ class Tweet
         return $result;
     }
 
-    static public function loadAllTweets(mysqli $conn)
+    public static function loadAllTweets(mysqli $conn)
     {
         $sql = "SELECT * FROM `tweet` ORDER BY `creationDate` DESC";
 
