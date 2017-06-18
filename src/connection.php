@@ -2,8 +2,8 @@
 
 require_once 'config.php';
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+$conn = new mysqli( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
 
-if ($conn->connect_error){
-    die('Can not connect to databse: ' . $conn->connect_error);
+if ( $conn->connect_error ) {
+	die( 'Can not connect to databse: ' . $conn->connect_error );
 }

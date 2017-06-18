@@ -2,11 +2,11 @@
 
 require_once 'User.php';
 
-function loggedUser($conn)
+function loggedUser( $conn )
 {
-    if (isset($_SESSION['user'])) {
-        return User::loadUserById($conn, $_SESSION['user']);
-    }
+	if ( isset( $_SESSION[ 'user' ] ) ) {
+		return User::loadUserById( $conn, $_SESSION[ 'user' ] );
+	}
 
-    return false;
+	return false;
 }

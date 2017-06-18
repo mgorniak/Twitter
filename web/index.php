@@ -7,52 +7,52 @@ require_once '../src/Tweet.php';
 require_once '../src/Comment.php';
 
 session_start();
-$user = loggedUser($conn);
+$user = loggedUser( $conn );
 
-if (!isset($_SESSION['view'])) {
-    $_SESSION['view'] = "all";
+if ( !isset( $_SESSION[ 'view' ] ) ) {
+	$_SESSION[ 'view' ] = "all";
 }
 
 //Obsługa formularza dodającego tweeta
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['tweetText']) && isset($user)) {
-        $tweetText = $_POST['tweetText'];
-        $userId = $user->getId();
-        $creationDate = date("Y-m-d H:i:s");
+if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
+	if ( isset( $_POST[ 'tweetText' ] ) && isset( $user ) ) {
+		$tweetText = $_POST[ 'tweetText' ];
+		$userId = $user->getId();
+		$creationDate = date( "Y-m-d H:i:s" );
 
-        $tweet = new Tweet;
+		$tweet = new Tweet;
 
-        $tweet->setText($tweetText);
-        $tweet->setCreationDate($creationDate);
-        $tweet->setUserId($userId);
+		$tweet->setText( $tweetText );
+		$tweet->setCreationDate( $creationDate );
+		$tweet->setUserId( $userId );
 
-        $tweet->saveToDb($conn);
-    }
+		$tweet->saveToDb( $conn );
+	}
 }
 
 //Obsługa formularza dodającego komentarz
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['commentText']) && isset($user) && isset($_POST['postId'])) {
-        $commentText = $_POST['commentText'];
-        $userId = $user->getId();
-        $postId = $_POST['postId'];
-        $creationDate = date("Y-m-d H:i:s");
+if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
+	if ( isset( $_POST[ 'commentText' ] ) && isset( $user ) && isset( $_POST[ 'postId' ] ) ) {
+		$commentText = $_POST[ 'commentText' ];
+		$userId = $user->getId();
+		$postId = $_POST[ 'postId' ];
+		$creationDate = date( "Y-m-d H:i:s" );
 
-        $comment = new Comment;
+		$comment = new Comment;
 
-        $comment->setPostId($postId);
-        $comment->setUserId($userId);
-        $comment->setCreationDate($creationDate);
-        $comment->setText($commentText);
+		$comment->setPostId( $postId );
+		$comment->setUserId( $userId );
+		$comment->setCreationDate( $creationDate );
+		$comment->setText( $commentText );
 
-        $comment->saveToDb($conn);
-    }
+		$comment->saveToDb( $conn );
+	}
 }
 
-if ($_SESSION['view'] === "all") {
-    $allTweets = Tweet::loadAllTweets($conn);
-} elseif ($_SESSION['view'] === "user") {
-    $allTweets = Tweet::loadAllTweetsByUserId($conn, $user->getId());
+if ( $_SESSION[ 'view' ] === "all" ) {
+	$allTweets = Tweet::loadAllTweets( $conn );
+} elseif ( $_SESSION[ 'view' ] === "user" ) {
+	$allTweets = Tweet::loadAllTweetsByUserId( $conn, $user->getId() );
 }
 
 ?>
@@ -66,72 +66,72 @@ if ($_SESSION['view'] === "all") {
 
 <?php
 //Potwierdzenie poprawnego dodania nowego użytkownika
-    if(isset($_SESSION['registered'])){
-        echo $_SESSION['registered'];
-        unset ($_SESSION['registered']);
-    }
+if ( isset( $_SESSION[ 'registered' ] ) ) {
+	echo $_SESSION[ 'registered' ];
+	unset ( $_SESSION[ 'registered' ] );
+}
 //Potwierdzenie poprawnego wylogowania
-    if(isset($_SESSION['logout'])){
-        echo $_SESSION['logout'];
-        unset ($_SESSION['logout']);
-    }
+if ( isset( $_SESSION[ 'logout' ] ) ) {
+	echo $_SESSION[ 'logout' ];
+	unset ( $_SESSION[ 'logout' ] );
+}
 
-    if ($user) { ?>
-        <div>You are logged in as: <?php echo $user->getUsername() ?></div>
-        <div><a href='mailBox.php'>Mailbox</a></div>
-        <div><a href='logout.php'>Logout</a></div>
+if ( $user ) { ?>
+    <div>You are logged in as: <?php echo $user->getUsername() ?></div>
+    <div><a href='mailBox.php'>Mailbox</a></div>
+    <div><a href='logout.php'>Logout</a></div>
+    </p>
+    <!--Formularz nadawania tweeta-->
+    <div>
+        <p>Write down your tweet <?php echo $user->getUsername(); ?>
+            <form action="#" method="POST">
+        <p><label>Text: <input name="tweetText" type="text"></label>
+            <input type="submit" value="Tweet"></p>
+        </form>
+    </div>
+    <!--Zmiana widoku tweetów. Wszystkie albo zalogowanego użytkownika-->
+    <div>
+        <form action="allOrUserTweets.php" method="POST">
+            <select name="allOrUserTweets">
+                <option value="all">All tweets</option>
+                <option value="user">Only my tweets</option>
+            </select>
+            <input type="submit" value="Change view">
+        </form>
+    </div>
+<?php } else { ?>
+    <div>
+        <p>
+            <a href="loginForm.php">Login</a>
+            <a href="registerForm.php">Register</a>
         </p>
-<!--Formularz nadawania tweeta-->
-        <div>
-            <p>Write down your tweet <?php echo $user->getUsername();?>
-                <form action = "#" method = "POST">
-            <p><label>Text: <input name ="tweetText" type = "text"></label>
-                <input type = "submit" value = "Tweet"></p>
-            </form>
-        </div>
-<!--Zmiana widoku tweetów. Wszystkie albo zalogowanego użytkownika-->
-        <div>
-            <form action="allOrUserTweets.php" method="POST">
-                <select name="allOrUserTweets">
-                    <option value="all">All tweets</option>
-                    <option value="user">Only my tweets</option>
-                </select>
-                <input type="submit" value="Change view">
-            </form>
-        </div>
-    <?php } else { ?>
-        <div>
-            <p>
-                <a href="loginForm.php">Login</a>
-                <a href="registerForm.php">Register</a>
-            </p>
-        </div>
-    <?php } ?>
-        <div>
-            <p>All tweets: </p>
-            <table border="1" rules="all">
-                <tr>
-                    <th>Id</th>
-                    <th>Id tweeta</th>
-                    <th>Treść</th>
-                    <th>Autor</th>
-                    <th>Data</th>
-                    <th>Komentarze</th>
-                </tr>
-                <!--Wyświetlanie listy tweetów. Wszystkich lub tylko zalogowanego użytkownika-->
-                <?php
-                $id = 0;
-                foreach ($allTweets as $tweet){
-                    $id++;
-                    $postId = $tweet['id'];
-                    $user = User::loadUserById($conn, $tweet['userId']);
-                    $allComments = Comment::loadAllCommentsByPostId($conn, $postId);
-                    echo "
+    </div>
+<?php } ?>
+<div>
+    <p>All tweets: </p>
+    <table border="1" rules="all">
+        <tr>
+            <th>Id</th>
+            <th>Id tweeta</th>
+            <th>Treść</th>
+            <th>Autor</th>
+            <th>Data</th>
+            <th>Komentarze</th>
+        </tr>
+        <!--Wyświetlanie listy tweetów. Wszystkich lub tylko zalogowanego użytkownika-->
+		<?php
+		$id = 0;
+		foreach ( $allTweets as $tweet ) {
+			$id++;
+			$postId = $tweet[ 'id' ];
+			$user = User::loadUserById( $conn, $tweet[ 'userId' ] );
+			$allComments = Comment::loadAllCommentsByPostId( $conn, $postId );
+			echo "
                         <tr><td>" . $id . "</td>
                             <td>" . $postId . "</td>
-                            <td>" . $tweet['text'] . "</td>
+                            <td>" . $tweet[ 'text' ] . "</td>
                             <td>" . $user->getUsername() . "</td>
-                            <td>" . $tweet['creationDate'] . "</td>
+                            <td>" . $tweet[ 'creationDate' ] . "</td>
 <!--Wyświetlanie komentarzy-->
                             <td>
 <!--Formularz komentarzy-->
@@ -142,15 +142,15 @@ if ($_SESSION['view'] === "all") {
                                 </form>
                                 
                                 <ul type='square'>";
-                    foreach($allComments as $comment) {
-                        $userComment = User::loadUserById($conn, $comment['userId']);
-                        echo "<li>" . $comment['text'] . " - " . $userComment->getUsername() . " - dodano " . $comment['creationDate'] . "</li>";
-                    };
-                    "</ul>
+			foreach ( $allComments as $comment ) {
+				$userComment = User::loadUserById( $conn, $comment[ 'userId' ] );
+				echo "<li>" . $comment[ 'text' ] . " - " . $userComment->getUsername() . " - dodano " . $comment[ 'creationDate' ] . "</li>";
+			};
+			"</ul>
                             </td></tr>";
-                }
-                ?>
-            </table>
-        </div>
+		}
+		?>
+    </table>
+</div>
 </body>
 </html>
